@@ -1,5 +1,7 @@
 package fr.entasia.apis.nbt;
 
+import fr.entasia.errors.MirrorException;
+
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -9,8 +11,8 @@ public class NBTComponent {
 
 	public static Method fusion, setPreciseTag, delKey, getList, setList, getAny;
 	public static Field mapField;
-
-	public Map<String, Object> map;
+	
+	protected Map<String, Object> map;
 	protected Object rawnbt;
 
 	public Object getRawNBT(){
@@ -21,21 +23,25 @@ public class NBTComponent {
 		return rawnbt.toString();
 	}
 
+	public Map<String, Object> getMap(){
+		return map;
+	}
+
 	protected NBTComponent(Object nbt){
 		this.rawnbt = nbt;
 		try{
 			map = (Map<String, Object>) mapField.get(nbt);
 		}catch(ReflectiveOperationException e){
-			e.printStackTrace();
+			throw new MirrorException(e);
 		}
 	}
 
 	public NBTComponent(String nbt){
-		this(NBTer.rawParseNBT(nbt));
+		this(NBTManager.rawParseNBT(nbt));
 	}
 
 	public NBTComponent(){
-		this(NBTer.rawParseNBT("{}"));
+		this(NBTManager.rawParseNBT("{}"));
 	}
 
 

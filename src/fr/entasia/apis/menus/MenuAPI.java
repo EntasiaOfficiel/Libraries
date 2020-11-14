@@ -19,15 +19,6 @@ public class MenuAPI implements Listener {
 		Paper.main.getServer().getPluginManager().registerEvents(new MenuAPI(), Paper.main);
 	}
 
-	public static class InvInst{
-		public Inventory inv;
-		public Object data;
-
-		public InvInst(Inventory inv, Object data) {
-			this.inv = inv;
-			this.data = data;
-		}
-	}
 	public static class MenuData{
 		public MenuCreator menu;
 		public InvInst inst;
@@ -128,7 +119,7 @@ public class MenuAPI implements Listener {
 								if (md.menu.hasFreeSlot(e.getSlot())){ // slot déplacable
 									try{
 										if(md.menu.onFreeSlotClick(mce)) e.setCancelled(true);
-									}catch(Exception e2){
+									}catch(Throwable e2){
 										e2.printStackTrace();
 									}
 								}else{ // slot déplacable
